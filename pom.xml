@@ -45,7 +45,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>bajajmall-app</finalName>
+		<finalName>bajajmall</finalName>
 	</build>
 
 </project>
