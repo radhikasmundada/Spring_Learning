@@ -1,49 +1,80 @@
 package com.bajaj.jpalearning.Controller;
 
+import com.bajaj.jpalearning.Services.CustomerService;
+import com.bajaj.jpalearning.beans.ResponseHandler;
 import com.bajaj.jpalearning.entities.Customer;
-import com.bajaj.jpalearning.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
-//    @GetMapping("/customers")
-//    public String getCustomers() { // method name should be starts from get
-//
-//        return "This is a customer Api call";
-//    }
+/*
+    @GetMapping("/")
+    public ResponseEntity<List<Customer>> getCustomers() {
+        return new ResponseEntity<>(customerService.getAll(), HttpStatus.OK);
+   }
 
-    @GetMapping("/customers")
-    public List<Customer> getCustomers() {
-        return customerRepository.findAll();
+ */
+    @GetMapping("/")
+    public ResponseEntity<Object> getCustomers() {
+        List<Customer> customer = customerService.getAllCustomers();
+        return ResponseHandler.createResponse("", HttpStatus.OK, customer);
     }
 
-    @GetMapping("/customers/{id}") // id is variable that's why it should be in {}
-    public Object getCustomerByItsId(@PathVariable Long id) {
-
-        Optional<Customer> customer = customerRepository.findById(id);
-
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCustomerById(@PathVariable Long id) {
+        Customer customer = customerService.getCustomerById(id);
+        return ResponseHandler.createResponse("Customer found", HttpStatus.OK,  customer);
+        /*
         if (customer.isPresent()) {
-            return customer.get();
+            return ResponseHandler.createResponse("Customer Found", HttpStatus.OK, customer.get());
         } else {
-            return "Customer not found";
+//            Map<String,Object> response = new HashMap<>();
+//            response.put("message", "Customer Not Found");
+
+            return ResponseHandler.createResponse("Customer Not found", HttpStatus.NOT_FOUND, null);
         }
+         */
     }
 
-    @DeleteMapping("/customers/{id}")
-    public String deleteCustomer(@PathVariable Long id) {
-        customerRepository.deleteById(id);
-        return "Customer deleted";
+    @PostMapping("/create")
+    public ResponseEntity<Object> createCustomer(@RequestBody Customer customer) {
+        Object createdCustomer = customerService.createCustomer(customer);
+        return ResponseHandler.createResponse("New customer is created", HttpStatus.CREATED, createdCustomer);
+
+       /* if (createdCustomer != null) {
+            return ResponseHandler.createResponse("New customer is created", HttpStatus.CREATED, createdCustomer);
+        } else {
+            return ResponseHandler.createResponse("Customer Already exist", HttpStatus.CONFLICT, null);
+        }*/
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCustomerById(@PathVariable Long id) {
+        Customer customer = customerService.getCustomerById(id);
+        customerService.deleteCustomerById(id);
+        return ResponseHandler.createResponse("Customer Deleted", HttpStatus.OK,  customer);
+    }
+
+    @PutMapping("/updateCustomer")
+    public  Object update(@RequestBody Customer customer){
+        Object customer1 = customerService.updateCustomer(customer);
+        return ResponseHandler.createResponse("Customer name updated", HttpStatus.OK, customer1);
+    }
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Object> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+//        Customer updatedCustomer = customerService.updateCustomer(id, customer);
+//        return ResponseHandler.createResponse("Customer updated", HttpStatus.OK, updatedCustomer);
+//    }
 
 }

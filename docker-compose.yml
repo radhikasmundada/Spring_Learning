@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: bajajmall-postgres-container
+    environment:
+      POSTGRES_USER: radhika
+      POSTGRES_PASSWORD: radhika
+      POSTGRES_DB: bajajmallDB
+    ports:
+      - "5433:5432"
+    volumes:
+      - /Users/radhikamundada/Documents/BajajTraining/Spring/jpa-learning4/bajajmall-data-docker:/var/lib/postgresql/data
+  app:
+    build: .
+    image: bajajmall-app-v1
+    container_name: bajajmall-app-container
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bajajmallDB
+      SPRING_DATASOURCE_USERNAME: radhika
+      SPRING_DATASOURCE_PASSWORD: radhika
+    depends_on:
+      - db
+
+
+

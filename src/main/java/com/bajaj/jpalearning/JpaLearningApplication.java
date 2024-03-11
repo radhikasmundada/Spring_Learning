@@ -1,7 +1,11 @@
 package com.bajaj.jpalearning;
 
+import com.bajaj.jpalearning.entities.Address;
 import com.bajaj.jpalearning.entities.Customer;
+import com.bajaj.jpalearning.repositories.AddressRepository;
+import com.bajaj.jpalearning.repositories.CartItemRepository;
 import com.bajaj.jpalearning.repositories.CustomerRepository;
+import com.bajaj.jpalearning.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,26 +13,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
 public class JpaLearningApplication implements CommandLineRunner {
-    @Autowired
-    private CustomerRepository customerRepository;
 
     public static void main(String[] args) {
-
         SpringApplication.run(JpaLearningApplication.class, args);
-
     }
 
-    // ... it convert into  array run(1,2,3,4)
-    // Entity
-    //Repository -> functions
     @Override
     public void run(String... args) throws Exception {
-
 
         // Insert operation
 
@@ -117,12 +114,24 @@ public class JpaLearningApplication implements CommandLineRunner {
         }
 
  */
+//        Customer customer = new Customer("Krishna",23,"krishna@gmail.com","krishna");
+//
+//        Address address1 = new Address(1,"pune",431101);
+//        address1.setCustomer(customer);
+//
+//        Address address2 = new Address(2,"Mumbai",43123);
+//        address2.setCustomer(customer);
+//
+//        customer.getAddresses().add(address1);
+//        customer.getAddresses().add(address2);
+
+//        List<Address>  addresses = new ArrayList<>();
+//        addresses.add(address1);
+//        addresses.add(address2);
+//        customer.setAddresses(addresses);
+
+//        customerRepository.save(customer);
 
     }
 
-
-    @GetMapping("/") // here / means base address
-    public String dummyEndPoint() {
-        return "Hello World !!!";
-    }
 }

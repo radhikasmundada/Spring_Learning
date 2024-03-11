@@ -19,5 +19,4 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
     @Query("Select c from Customer c where c.name = ?1 and c.age = ?2")
     List<Customer> findCustomers(String name, int age);
-
 }
